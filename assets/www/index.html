@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>jQuery Mobile: Demos and Documentation</title>
+    <link rel="stylesheet" href="jquery.mobile/jquery.mobile-1.3.1.css" type="text/css">
+	<!--  <link rel="stylesheet" href="docs/assets/css/jqm-docs.css" /> -->
+	<!--  <link rel="stylesheet" href="docsdemos-style-override.css" /> -->
+	<script type="text/javascript" src="jquery.mobile/jquery-1.7.2.min"></script>
+    <script type="text/javascript" charset="utf-8">
+      $( document ).bind( "mobileinit", function() {
+        $.support.cors                 = true;
+        $.mobile.allowCrossDomainPages = true;
+        $.mobile.pushStateEnabled      = false;
+      });
+    </script>	
+    <script type="text/javascript" src="jquery.mobile/jquery.mobile-1.3.1.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    
+	<!-- Uncomment following line to access PhoneGap APIs (not necessary to use PhoneGap to package web app) -->
+	<!-- <script type="text/javascript" charset="utf-8" src="cordova.js"></script>-->
+
+	<!-- CDN Respositories: For production, replace lines above with these uncommented minified versions -->
+	<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />-->
+	<!-- <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>-->
+	<!-- <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>-->
+	
+
+	</head> 
+<body> 
+	<!-- Start of first page -->
+	<div data-role="page" id="services_list">
+	
+		<div data-role="header">
+			<h1>List</h1>
+	        <a href="#registration" data-icon="gear" class="ui-btn-right">Registration</a>
+		</div><!-- /header -->
+	
+		<div data-role="content">	
+	        <ul data-role="listview">
+		        <li><a href="#mat_avail">Material Availability</a></li>
+	        </ul>
+		</div><!-- /content -->
+	
+		<div data-role="footer">
+			<h4>Page Footer</h4>
+		</div><!-- /footer -->
+	</div><!-- /page -->    
+
+	<!-- Start of second page -->
+	<div data-role="page" id="registration">
+	    <script>
+	        //Let us create the XML http object
+	        var xmlHttp = null;
+	
+	        $("#registration").live(
+	            "pageshow",
+	            function (event) {
+	                if ($("input:text#username").val() != "") {
+	                    $("#status").text("Status: test");
+	                } else {
+	
+	                    var dataRequest = "";
+	
+	                    if (window.XMLHttpRequest) {
+	                        //for new browsers
+	                        xmlHttp = new XMLHttpRequest();
+	                    }
+	                    else if (window.ActiveXObject) {
+	                        //for old ones
+	                        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+	                    }
+	
+	                    if (xmlHttp != null) {
+	                        //Handle the response of this async request we just made(subscribe to callback)
+	                        xmlHttp.onreadystatechange = state_Change;
+	
+	                        //eveyhthing so far is just fine, lets proceed                        
+	                        xmlHttp.open("POST", "http://localhost:24663/registered.aspx", true);
+	                        xmlHttp.withCredentials = true;
+	                        xmlHttp.setRequestHeader("Content-Type", "text/xml");
+	                        xmlHttp.setRequestHeader("Proxy-Connection", "Keep-Alive");
+	                        xmlHttp.setRequestHeader("REG_HDD_Serial", "ff23d46ae5ff6e38c1fd12a44fc3e8272497ebbb");
+	                        xmlHttp.setRequestHeader("REG_Pass", "ArmServicesIPhone2012");
+	
+	                        xmlHttp.send(dataRequest);
+	                    }
+	
+	                    return false;
+	                }
+	            }
+	
+	        );
+	
+	        //Handle the response of this async request
+	        function state_Change() {
+	            if (xmlHttp.readyState == 4) {
+	                // 4 = Ã¢â‚¬Å“loadedÃ¢â‚¬Â 
+	                if (xmlHttp.status == 200) {
+	                    var strValue = xmlHttp.getResponseHeader("Return-Value");
+	
+	                    if (strValue == "0") {
+	                        $("#status").text("Status: Registered Ok");
+	                    } else if (strValue == "2") {
+	                        $("#status").text("Status: No Registration");
+	                    } else if (strValue == "3") {
+	                        $("#status").text("Status: Not Authorized");
+	                    } else {
+	                        $("#status").text("Status: No Registration");
+	                    }
+	                }
+	            }
+	        }
+	    </script>
+		<div data-role="header">
+			<h1>Registration</h1>
+	        <a href="#services_list" class="ui-btn-right">Done</a>
+		</div><!-- /header -->
+	
+		<div data-role="content">	
+	        <label id="status">Staus:</label>
+	
+	        <form>
+	            <label for="username" class="ui-hidden-accessible">Username:</label>
+	            <input type="text" name="username" id="username" value="" placeholder="Username"/>
+	
+	            <label for="password" class="ui-hidden-accessible">Password:</label>
+	            <input type="password" name="password" id="password" value="" placeholder="Password"/>
+	
+	            <div data-role="fieldcontain">
+	                <fieldset data-role="controlgroup" data-type="horizontal">    	                
+	         	          
+	                    <input type="radio" name="radio-choice-2" id="radio-choice-21" value="choice-1" checked="checked" />
+	         	        <label for="radio-choice-21">Customer</label>
+	
+	         	        <input type="radio" name="radio-choice-2" id="radio-choice-22" value="choice-2"  />
+	         	        <label for="radio-choice-22">Sales Rep.</label>
+	
+	                </fieldset>
+	            </div>
+	
+	            <input type="submit" value="Request Registration" />
+	        </form>            	
+		</div><!-- /content -->
+	
+		<div data-role="footer">
+			<h4>Page Footer</h4>
+		</div><!-- /footer -->
+	
+	</div><!-- /page -->
+	
+	<!-- Start of second page -->
+	<div data-role="page" id="mat_avail">
+	
+		<div data-role="header">
+			<h1>Material Availability</h1>
+	        <a href="#services_list" class="ui-btn-right">Back</a>
+		</div><!-- /header -->
+	
+		<div data-role="content">	
+	        <form id="form1" method="post" action="#results">
+	
+	        <a href="#sel_mat" data-role="button" id="btn_selectmat">[click to select material]</a>
+	        
+	        <div data-role="fieldcontain">
+	            <label for="material" class="ui-hidden-accessible">Material:</label>
+	            <input type="hidden" name="material" id="material" value=""/>
+	        </div>
+		        
+	        <label for="quantity" class="ui-hidden-accessible">Quantity:</label>
+	        <input type="text" name="quantity" id="quantity" value="" placeholder="Quantity"/>
+	
+		    <div data-role="fieldcontain">
+	            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+	    
+	                <label for="select-choice-month">Month</label>
+	                <select name="select-choice-month" id="select-choice-month">
+	                    <option>Month</option>
+	                    <option value="jan">January</option>
+	                    <!-- etc. -->
+	                </select>
+	    
+	                <label for="select-choice-day">Day</label>
+	                <select name="select-choice-day" id="select-choice-day">
+	                    <option>Day</option>
+	                    <option value="1">1</option>
+	                    <option value="2">2</option>
+	                </select>
+	    
+	                <label for="select-choice-year">Year</label>
+	                <select name="select-choice-year" id="select-choice-year">
+	                    <option>Year</option>
+	                    <option value="2013">2013</option>
+	                    <option value="2014">2014</option>
+	                </select>
+	        
+	            </fieldset>
+	        </div>
+	        <!--
+		    <a href="#sel_mat" data-role="button">[click to select customer]</a>
+	         
+	        <label for="customer" class="ui-hidden-accessible">Quantity:</label>
+	        <input type="hidden" name="customer" id="customer" value=""/>
+	        -->
+	        <input type="submit" value="Check Availability" />
+	        </form>
+		</div><!-- /content -->
+	
+		<div data-role="footer">
+			<h4>Page Footer</h4>
+		</div><!-- /footer -->
+	</div><!-- /page -->
+	
+	<!-- Materials page -->
+	<div data-role="page" id="sel_mat">
+	
+		<div data-role="header">
+			<h1>Select Material</h1>
+	        <a href="#mat_avail" data-icon="done" class="ui-btn-right">Done</a>
+		</div><!-- /header -->
+	
+		<div data-role="content">	
+	        <ul id="mat_list" data-role ="listview">
+	
+	        </ul>
+		</div><!-- /content -->
+	
+		<div data-role="footer">
+			<h4>Page Footer</h4>
+		</div><!-- /footer -->
+	</div><!-- /page -->
+	
+	<!-- Materials page -->
+	<div data-role="page" id="results">
+	
+		<div data-role="header">
+			<h1>Results</h1>
+	        <a href="#mat_avail" data-icon="done" class="ui-btn-right">Done</a>
+		</div><!-- /header -->
+	
+		<div data-role="content">	
+	        <h3>test</h3>
+	        <p></p>
+		</div><!-- /content -->
+	
+		<div data-role="footer">
+			<h4>Page Footer</h4>
+		</div><!-- /footer -->
+	</div><!-- /page -->
+</body>
+</html>
