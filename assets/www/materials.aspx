@@ -32,7 +32,7 @@
       <R>
         <C>100270443</C>
         <C>BP102033A</C>
-        <C>Prelude 15 TL Cross tee unslotted</C>
+        <C>Prelude 15 TL Cross tee unslottedX</C>
         <C>600*15*38 mm</C>
       </R>
       <R>
